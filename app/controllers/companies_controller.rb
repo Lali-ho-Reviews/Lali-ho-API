@@ -10,7 +10,10 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1
   def show
-    render json: @company
+    if @company
+      render json: @company
+    else
+      render json: {"error": "No such Free Company exists"}, :status :not_found
   end
 
   # POST /companies
@@ -18,7 +21,7 @@ class CompaniesController < ApplicationController
     @company = Company.new(company_params)
 
     if @company.save
-      render json: @company, status: :created, location: @company
+      render json: @company, status: :created # location: @company - redirects handled in React
     else
       render json: @company.errors, status: :unprocessable_entity
     end
