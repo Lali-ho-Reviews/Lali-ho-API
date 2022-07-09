@@ -4,6 +4,6 @@ Rails.application.routes.draw do
 
   scope '/auth' do
     post "/signup", to: "users#create"
-    post "/signin", to: "users#signin"
+    post "/signin", to: "users#sign_in"
   end
 end
