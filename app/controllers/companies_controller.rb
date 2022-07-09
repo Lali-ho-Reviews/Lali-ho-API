@@ -13,7 +13,8 @@ class CompaniesController < ApplicationController
     if @company
       render json: @company
     else
-      render json: {"error": "No such Free Company exists"}, :status :not_found
+      render json: {"error": "No such Free Company exists"}, status: :not_found
+    end
   end
 
   # POST /companies
