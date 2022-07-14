@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :reviews
-  resources :companies
+  resources :companies do
+    resources :reviews
+  end
 
   scope '/auth' do
     post "/signup", to: "users#create"
