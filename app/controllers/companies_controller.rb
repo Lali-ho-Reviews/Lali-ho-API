@@ -3,9 +3,11 @@ class CompaniesController < ApplicationController
 
   # GET /companies
   def index
-    @companies = Company.all
+    @companies = Company.includes(:categories).all
 
     render json: @companies
+    # Rails is being weird but this needs to be fixed
+    # Possible fix here https://stackoverflow.com/questions/17730121/include-associated-model-when-rendering-json-in-rails
   end
 
   # GET /companies/1
