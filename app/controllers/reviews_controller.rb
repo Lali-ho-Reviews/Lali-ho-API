@@ -1,9 +1,10 @@
 class ReviewsController < ApplicationController
+  before_action :get_company
   before_action :set_review, only: [:show, :update, :destroy]
 
   # GET /reviews
   def index
-    @reviews = Review.all
+    @reviews = @company.reviews
 
     render json: @reviews
   end
@@ -15,10 +16,10 @@ class ReviewsController < ApplicationController
 
   # POST /reviews
   def create
-    @review = Review.new(review_params)
+    @review = @company.reviews.build(review_params)
 
     if @review.save
-      render json: @review, status: :created, location: @review
+      render json: @review, status: :created
     else
       render json: @review.errors, status: :unprocessable_entity
     end
@@ -39,9 +40,15 @@ class ReviewsController < ApplicationController
   end
 
   private
+
+    #set the Company to post the review to
+    def get_company
+      @company = Company.find(params[:company_id])
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_review
-      @review = Review.find(params[:id])
+      @review = @company.reviews.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
