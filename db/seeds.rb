@@ -18,11 +18,24 @@ if User.count == 0
     User.create(username: "Admin", email: "a@a.com", password: "123", password_confirmation: "123", isAdmin: true)
 end
 
+if Category.count == 0
+    Category.create(title: "Roleplay")
+    Category.create(title: "Raids")
+    Category.create(title: "PVP")
+end
+
 if Company.count == 0
     Company.create(name: "Dungeon Dudes", slogan: "We delve for our selves!", rank: 30, ff_id:"3335454353453", members: 25, server: "Pheonix")
     Company.create(name: "Roleplay Rastafarians", slogan: "Here to have a good time, and dance on tables", rank: 15, ff_id:"23567856435", members: 420, server: "Shiba")
     Company.create(name: "PK 4 LIFE", slogan: "Eat trash, beat trash. SIT KID", rank: 30, ff_id:"887654364354", members: 99, server: "Fantasy Oxen")
     Company.create(name: "Sprout Support", slogan: "We almost called ourselves Brawndo, because we're what plants crave.", rank: 25, ff_id:"9045655234356634", members: 125, server: "Anime-word")
+end
+
+if CompanyCategory.count == 0
+    CompanyCategory.create(company_id: 1, category_id: 2)
+    CompanyCategory.create(company_id: 1, category_id: 3)
+    CompanyCategory.create(company_id: 2, category_id: 1)
+    CompanyCategory.create(company_id: 3, category_id: 3)
 end
 
 if Review.count == 0
