@@ -5,15 +5,13 @@ class CompaniesController < ApplicationController
   def index
     @companies = Company.includes(:categories).all
 
-    render json: @companies
-    # Rails is being weird but this needs to be fixed
-    # Possible fix here https://stackoverflow.com/questions/17730121/include-associated-model-when-rendering-json-in-rails
+    render json: @companies.as_json(include: { categories: { only: :title } })
   end
 
   # GET /companies/1
   def show
     if @company
-      render json: @company
+      render json: @company.as_json(include: { categories: { only: :title } })
     else
       render json: {"error": "No such Free Company exists"}, status: :not_found
     end
@@ -47,7 +45,7 @@ class CompaniesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
-      @company = Company.find(params[:id])
+      @company = Company.includes(:categories).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
