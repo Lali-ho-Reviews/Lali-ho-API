@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_09_053340) do
+ActiveRecord::Schema.define(version: 2022_07_18_053509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -24,6 +30,15 @@ ActiveRecord::Schema.define(version: 2022_07_09_053340) do
     t.string "server"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "company_categories", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_company_categories_on_category_id"
+    t.index ["company_id"], name: "index_company_categories_on_company_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -47,6 +62,8 @@ ActiveRecord::Schema.define(version: 2022_07_09_053340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "company_categories", "categories"
+  add_foreign_key "company_categories", "companies"
   add_foreign_key "reviews", "companies"
   add_foreign_key "reviews", "users"
 end

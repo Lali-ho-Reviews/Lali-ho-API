@@ -3,15 +3,15 @@ class CompaniesController < ApplicationController
 
   # GET /companies
   def index
-    @companies = Company.all
+    @companies = Company.includes(:categories).all
 
-    render json: @companies
+    render json: @companies.as_json(include: { categories: { only: :title } })
   end
 
   # GET /companies/1
   def show
     if @company
-      render json: @company
+      render json: @company.as_json(include: { categories: { only: :title } })
     else
       render json: {"error": "No such Free Company exists"}, status: :not_found
     end
@@ -45,7 +45,7 @@ class CompaniesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
-      @company = Company.find(params[:id])
+      @company = Company.includes(:categories).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
