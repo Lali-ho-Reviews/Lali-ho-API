@@ -5,11 +5,13 @@ class ReviewsController < ApplicationController
 
   # GET /reviews
   def index
-    @reviews = @company.reviews
+    @reviews = []
+    @company.reviews.each do |review|
+      @reviews << review.transform_review
+    end
 
     #Returns text/rating/author, and if it is associated with a user, sends username/user_id
-    render :json => @reviews.to_json( :include => { :user => {:only => [:username, :id] }},
-    :only => [:text, :rating, :author])
+    render json: @reviews
   end
 
   # GET /reviews/1
