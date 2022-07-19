@@ -1,23 +1,31 @@
 class ReviewsController < ApplicationController
   before_action :get_company
   before_action :set_review, only: [:show, :update, :destroy]
+  # before_action :authenticate_user, only: [:update, :destroy]
 
   # GET /reviews
   def index
-    @reviews = @company.reviews
+    @reviews = []
+    @company.reviews.each do |review|
+      @reviews << review.transform_review
+    end
 
+    #Returns text/rating/author, and if it is associated with a user, sends username/user_id
     render json: @reviews
   end
 
   # GET /reviews/1
   def show
-    render json: @review
+    render json: @review.transform_review
   end
 
   # POST /reviews
   def create
     @review = @company.reviews.build(review_params)
-
+    if current_user 
+      @review.user = current_user
+      @review.author = current_user
+    end
     if @review.save
       render json: @review, status: :created
     else
