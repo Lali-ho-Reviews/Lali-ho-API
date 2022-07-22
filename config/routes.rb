@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 's3/direct_post'
   resources :companies do
     resources :reviews
   end

@@ -44,9 +44,9 @@ ActiveRecord::Schema.define(version: 2022_07_18_053509) do
   create_table "reviews", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "company_id", null: false
-    t.string "text", null: false
+    t.string "text"
     t.integer "rating"
-    t.string "author", null: false
+    t.string "author"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_reviews_on_company_id"
