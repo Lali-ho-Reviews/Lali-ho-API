@@ -2,6 +2,7 @@ class ReviewsController < ApplicationController
   before_action :get_company
   before_action :set_review, only: [:show, :update, :destroy]
   # before_action :authenticate_user, only: [:update, :destroy]
+  # before_action :check_ownership, only: [:update, :destroy]
 
   # GET /reviews
   def index
@@ -48,6 +49,12 @@ class ReviewsController < ApplicationController
   end
 
   private
+
+    def check_ownership
+      if current_user.id != @review.user.id
+        render json: {error: "Unauthorised to complete this action."}
+      end
+    end
 
     #set the Company to post the review to
     def get_company
