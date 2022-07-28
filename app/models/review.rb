@@ -4,7 +4,7 @@ class Review < ApplicationRecord
   validates_presence_of :text
 
   def transform_review
-    if self.user.username
+    if self.user
       return {
         id: self.id,
         text: self.text,
