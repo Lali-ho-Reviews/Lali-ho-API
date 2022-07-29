@@ -1,5 +1,9 @@
 class UsersController < ApplicationController
 
+    def show
+        @user = User.find_by_username(params[:username])
+        render json: @user.as_json(include: { reviews: {only: [:text, :rating], methods: :company_name } }, only: [:username, :created_at])
+    end
 
     def create
         @user = User.new(user_params)
