@@ -32,7 +32,7 @@ class ReviewsController < ApplicationController
     @review = @company.reviews.create(review_params)
     if current_user
       @review.user = current_user
-      @review.author = null
+      @review.author = nil
     end
     if @review.save
       render json: @review, status: :created
