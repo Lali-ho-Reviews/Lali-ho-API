@@ -1,8 +1,8 @@
 class ReviewsController < ApplicationController
-  before_action :get_company
+  before_action :get_company, except: [:user_reviews]
   before_action :set_review, only: [:show, :update, :destroy]
-  # before_action :authenticate_user, only: [:update, :destroy]
-  # before_action :check_ownership, only: [:update, :destroy]
+  before_action :authenticate_user, only: [:update, :destroy]
+  before_action :check_ownership, only: [:update, :destroy]
 
   # GET /reviews
   def index
@@ -15,6 +15,13 @@ class ReviewsController < ApplicationController
     render json: @reviews
   end
 
+  def user_reviews
+    @reviews = []
+    Review.find_by_user(params[:username]).each do |review|
+      @reviews << review.context_reviews
+    end
+  end
+
   # GET /reviews/1
   def show
     render json: @review.transform_review
@@ -22,10 +29,10 @@ class ReviewsController < ApplicationController
 
   # POST /reviews
   def create
-    @review = @company.reviews.build(review_params)
-    if current_user 
+    @review = @company.reviews.create(review_params)
+    if current_user
       @review.user = current_user
-      @review.author = current_user
+      @review.author = null
     end
     if @review.save
       render json: @review, status: :created
@@ -51,7 +58,7 @@ class ReviewsController < ApplicationController
   private
 
     def check_ownership
-      if current_user.id != @review.user.id
+      if !(current_user.isAdmin || current_user.id != @review.user.id)
         render json: {error: "Unauthorised to complete this action."}
       end
     end
@@ -68,6 +75,6 @@ class ReviewsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def review_params
-      params.require(:review).permit(:user_id, :company_id, :text, :rating, :author)
+      params.require(:review).permit(:company_id, :text, :rating, :author)
     end
 end

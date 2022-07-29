@@ -3,4 +3,17 @@ class User < ApplicationRecord
     has_many :reviews
     validates :username, presence: true, uniqueness: true
     validates :email, presence: true, uniqueness: true
+
+    def self.find_by_username(username)
+        user = User.find_by(username: username)
+        return user
+    end
+
+    def user_details
+        return {
+            id: self.id,
+            username: self.username,
+            created_at: self.created_at
+          }
+    end
 end

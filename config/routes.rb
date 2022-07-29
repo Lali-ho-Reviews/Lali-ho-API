@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/users/:username', to: "users#show"
 
   resources :companies do
     resources :reviews
