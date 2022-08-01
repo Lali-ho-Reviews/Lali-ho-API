@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+    before_action :authenticate_user, only: [:update, :destroy]
 
     def show
         @user = User.find_by_username(params[:username])
@@ -28,6 +29,16 @@ class UsersController < ApplicationController
             render json: {username: @user.username, jwt: auth_token.token }, status: 200
         else
             render json: {error: "Invalid email or password."}
+        end
+    end
+
+    def update
+        @user = User.find_by_email(params[:email])
+
+        if @user.update(user_params) && @user.authenticate(params[:password])
+            render json: @user.user_details, status: 200
+        else
+            render json: @user.errors, status: :unprocessable_entity
         end
     end
 

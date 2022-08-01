@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   scope '/auth' do
     post "/signup", to: "users#create"
     post "/signin", to: "users#sign_in"
+    post "/update", to: "users#update"
   end
 end
