@@ -2,6 +2,7 @@ class Review < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :company
   validates_presence_of :text, :rating
+  
 
   def transform_review
     if self.user
