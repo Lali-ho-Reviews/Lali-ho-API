@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get '/users/:username', to: "users#show"
+  get '/companies/search/:name', to: "companies#search"
+  get '/companies/category/:category', to: "companies#search_category"
 
   resources :companies do
     resources :reviews

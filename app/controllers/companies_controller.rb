@@ -17,6 +17,18 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def search
+    @companies = Company.search_by_name(params[:name])
+
+    render json: @companies.as_json(include: { categories: { only: :title } })
+  end
+
+  def search_category
+    search = params[:category]
+    @companies = Company.includes(:categories).where( :categories => {title: search})
+    render json: @companies.as_json(include: { categories: { only: :title } })
+  end
+
   # POST /companies
   def create
     @company = Company.new(company_params)
@@ -50,6 +62,6 @@ class CompaniesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def company_params
-      params.require(:company).permit(:name, :slogan, :rank, :ff_id, :members, :server)
+      params.require(:company).permit(:name, :slogan, :rank, :ff_id, :members, :server, :category)
     end
 end
