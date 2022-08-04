@@ -1,4 +1,4 @@
-girequire "rails_helper"
+require "rails_helper"
 
 RSpec.describe CompaniesController, type: :routing do
   describe "routing" do
