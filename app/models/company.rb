@@ -3,6 +3,7 @@ class Company < ApplicationRecord
     has_many :reviews , dependent: :destroy
     has_many :company_categories
     has_many :categories, through: :company_categories
+    validates_presence_of :name, :ff_id, :server
 
     
     pg_search_scope :search_by_name,
