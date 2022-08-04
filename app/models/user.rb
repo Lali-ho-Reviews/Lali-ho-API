@@ -3,7 +3,7 @@ class User < ApplicationRecord
     has_many :reviews
     validates :username, presence: true, uniqueness: true
     validates :email, presence: true, uniqueness: true
-    validates :password, presence: true, length: { minimum: 2 }
+    validates :password, presence: true, length: { minimum: 3 }
     before_save { email.downcase! }
 
     def self.find_by_username(username)
