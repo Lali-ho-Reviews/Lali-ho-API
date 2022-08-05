@@ -24,7 +24,11 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1
   def show
-    render json: @review.transform_review
+    if @review
+      render json: @review.transform_review
+    else
+      render json: {"error": "No such Free Company exists"}, status: :not_found
+    end
   end
 
   # POST /reviews
@@ -65,12 +69,12 @@ class ReviewsController < ApplicationController
 
     #set the Company to post the review to
     def get_company
-      @company = Company.find(params[:company_id])
+      @company = Company.find_by_id(params[:company_id])
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_review
-      @review = @company.reviews.find(params[:id])
+      @review = @company.reviews.find_by_id(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
